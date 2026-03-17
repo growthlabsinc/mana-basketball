@@ -897,7 +897,7 @@ footer {
 
   <!-- Scroll-driven video background -->
   <div class="hero-scroll-video">
-    <video id="heroVideo" src="hero_video.mp4" muted playsinline preload="auto"></video>
+    <video id="heroVideo" src="hero_video.mp4" muted playsinline webkit-playsinline autoplay preload="auto" poster="flow_pass.png"></video>
   </div>
 
   <!-- Coach & Player images (fallback) -->
@@ -1256,18 +1256,22 @@ reveals.forEach(el => observer.observe(el));
 // ── SCROLL-DRIVEN VIDEO ──
 const heroVideo = document.getElementById('heroVideo');
 if (heroVideo) {
-  heroVideo.addEventListener('loadedmetadata', () => {
-    // Start at end of video (coach has ball) and play backwards as user scrolls
-    heroVideo.currentTime = heroVideo.duration;
-    // Hide static images when video is ready
-    document.querySelectorAll('.hero-person').forEach(el => el.style.display = 'none');
-  });
-  // Map first 2x viewport scroll to full video duration (reversed)
+  let videoReady = false;
+  function initVideo() {
+    if (videoReady) return;
+    videoReady = true;
+    heroVideo.pause();
+    heroVideo.currentTime = heroVideo.duration || 0;
+    document.querySelectorAll('.hero-person').forEach(el => el.style.opacity = '0');
+  }
+  heroVideo.addEventListener('loadedmetadata', initVideo);
+  heroVideo.addEventListener('canplay', initVideo);
+  // Fallback: try playing to force load on mobile
+  heroVideo.play().then(() => heroVideo.pause()).catch(() => {});
   const scrollRange = window.innerHeight * 2;
   window.addEventListener('scroll', () => {
     if (!heroVideo.duration) return;
     const progress = Math.min(1, Math.max(0, window.scrollY / scrollRange));
-    // Reverse: start at end, scroll to beginning
     heroVideo.currentTime = heroVideo.duration * (1 - progress);
   }, { passive: true });
 }
