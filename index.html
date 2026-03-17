@@ -576,21 +576,14 @@ section { padding: 8rem 3rem; position: relative; overflow: hidden; }
   overflow: hidden;
   border-radius: 4px;
   background: #111;
-}
-.ig-posts-grid .ig-post-wrap blockquote.instagram-media {
-  margin: 0 !important;
-  min-width: 0 !important;
-  max-width: 100% !important;
-  width: 100% !important;
-  min-height: 480px;
-  background: #111 !important;
-  border: none !important;
+  position: relative;
 }
 .ig-posts-grid .ig-post-wrap iframe {
-  width: 100% !important;
-  min-height: 480px;
-  border: none !important;
+  width: 100%;
+  height: 580px;
+  border: none;
   display: block;
+  overflow: hidden;
 }
 .ig-view-all-btn {
   display: inline-flex;
@@ -1027,37 +1020,24 @@ footer {
 
     <div class="ig-posts-grid reveal">
       <div class="ig-post-wrap">
-        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DVpaL6XEe-y/" data-instgrm-version="14"><a href="https://www.instagram.com/reel/DVpaL6XEe-y/"></a></blockquote>
+        <iframe src="https://www.instagram.com/reel/DVpaL6XEe-y/embed/captioned/" frameborder="0" scrolling="no" allowtransparency="true"></iframe>
       </div>
       <div class="ig-post-wrap">
-        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DVX3W8TFI2p/" data-instgrm-version="14"><a href="https://www.instagram.com/p/DVX3W8TFI2p/"></a></blockquote>
+        <iframe src="https://www.instagram.com/p/DVX3W8TFI2p/embed/captioned/" frameborder="0" scrolling="no" allowtransparency="true"></iframe>
       </div>
       <div class="ig-post-wrap">
-        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DTjkvkaFA9-/" data-instgrm-version="14"><a href="https://www.instagram.com/p/DTjkvkaFA9-/"></a></blockquote>
+        <iframe src="https://www.instagram.com/p/DTjkvkaFA9-/embed/captioned/" frameborder="0" scrolling="no" allowtransparency="true"></iframe>
       </div>
       <div class="ig-post-wrap">
-        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DSixIXWEmj1/" data-instgrm-version="14"><a href="https://www.instagram.com/reel/DSixIXWEmj1/"></a></blockquote>
+        <iframe src="https://www.instagram.com/reel/DSixIXWEmj1/embed/captioned/" frameborder="0" scrolling="no" allowtransparency="true"></iframe>
       </div>
       <div class="ig-post-wrap">
-        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DSRZKDxEf_Q/" data-instgrm-version="14"><a href="https://www.instagram.com/reel/DSRZKDxEf_Q/"></a></blockquote>
+        <iframe src="https://www.instagram.com/reel/DSRZKDxEf_Q/embed/captioned/" frameborder="0" scrolling="no" allowtransparency="true"></iframe>
       </div>
       <div class="ig-post-wrap">
-        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DR3nz_4ESsI/" data-instgrm-version="14"><a href="https://www.instagram.com/p/DR3nz_4ESsI/"></a></blockquote>
+        <iframe src="https://www.instagram.com/p/DR3nz_4ESsI/embed/captioned/" frameborder="0" scrolling="no" allowtransparency="true"></iframe>
       </div>
     </div>
-    <script async src="//www.instagram.com/embed.js"></script>
-    <script>
-    // Retry embed processing in case embed.js loads before blockquotes are ready
-    function processIGEmbeds() {
-      if (window.instgrm && window.instgrm.Embeds) {
-        window.instgrm.Embeds.process();
-      } else {
-        setTimeout(processIGEmbeds, 1000);
-      }
-    }
-    setTimeout(processIGEmbeds, 2000);
-    setTimeout(processIGEmbeds, 5000);
-    </script>
 
     <div style="margin-top: 3rem; text-align: center;" class="reveal reveal-delay-2">
       <a href="https://www.instagram.com/manabasketballca" target="_blank" rel="noopener" class="ig-view-all-btn">
