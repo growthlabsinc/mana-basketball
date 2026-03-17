@@ -162,7 +162,7 @@ nav {
   position: relative;
   height: 200vh;
 }
-.hero-video-sticky {
+.hero-video-bg {
   position: sticky;
   top: 0;
   width: 100%;
@@ -171,13 +171,13 @@ nav {
   z-index: 1;
   transition: opacity 0.6s ease;
 }
-.hero-video-sticky video {
+.hero-video-bg video {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center center;
 }
-.hero-video-sticky::after {
+.hero-video-bg::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -292,7 +292,7 @@ nav {
   bottom: 2.5rem;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 3;
+  z-index: 4;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -817,25 +817,25 @@ footer {
 
 <!-- HERO: Sticky scroll-driven video -->
 <div class="hero-video-wrapper" id="home">
-  <div class="hero-video-sticky" id="heroSticky">
+  <div class="hero-video-bg" id="heroSticky">
     <video id="heroVideo" src="hero_video.mp4" muted playsinline webkit-playsinline preload="auto"></video>
+  </div>
 
-    <div class="hero-content">
-      <div class="hero-content-inner">
-        <img src="logo.png" alt="Mana Basketball" class="hero-logo">
-        <p class="hero-eyebrow">California Basketball Training</p>
-        <h1 class="hero-title">
-          <span class="line">MANA</span>
-          <span class="line outline">BASKETBALL</span>
-        </h1>
-        <p class="hero-subtitle">
-          Unlock your potential. Elite player development for athletes who refuse to settle.
-        </p>
-        <a href="#programs" class="hero-cta">
-          Explore Programs
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-      </div>
+  <div class="hero-content">
+    <div class="hero-content-inner">
+      <img src="logo.png" alt="Mana Basketball" class="hero-logo">
+      <p class="hero-eyebrow">California Basketball Training</p>
+      <h1 class="hero-title">
+        <span class="line">MANA</span>
+        <span class="line outline">BASKETBALL</span>
+      </h1>
+      <p class="hero-subtitle">
+        Unlock your potential. Elite player development for athletes who refuse to settle.
+      </p>
+      <a href="#programs" class="hero-cta">
+        Explore Programs
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
     </div>
 
     <div class="hero-scroll">
