@@ -16,16 +16,19 @@
   --navy: #181818;
   --teal: #0D6E8F;
   --cyan: #27B9EB;
+  --orange: #E8602C;
+  --orange-glow: rgba(232, 96, 44, 0.25);
+  --sky: #6BADE0;
   --white: #f0f0f0;
   --gray: #888;
   --card-bg: #141414;
-  --border: rgba(39, 185, 235, 0.12);
+  --border: rgba(232, 96, 44, 0.12);
 }
 
 html {
   scroll-behavior: smooth;
   scrollbar-width: thin;
-  scrollbar-color: var(--teal) var(--black);
+  scrollbar-color: var(--orange) var(--black);
 }
 
 body {
@@ -51,7 +54,7 @@ body::after {
 /* ── SCROLLBAR ── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--black); }
-::-webkit-scrollbar-thumb { background: var(--teal); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: var(--orange); border-radius: 3px; }
 
 /* ── REVEAL ANIMATIONS ── */
 .reveal {
@@ -96,10 +99,21 @@ nav.scrolled {
   text-decoration: none;
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.75rem;
 }
+.nav-logo img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  transition: transform 0.3s;
+}
+nav.scrolled .nav-logo img {
+  width: 38px;
+  height: 38px;
+}
+.nav-logo:hover img { transform: rotate(-8deg) scale(1.05); }
 .nav-logo .logo-accent {
-  color: var(--cyan);
+  color: var(--orange);
 }
 .nav-links {
   display: flex;
@@ -124,7 +138,7 @@ nav.scrolled {
   left: 0;
   width: 0;
   height: 1px;
-  background: var(--cyan);
+  background: var(--orange);
   transition: width 0.3s;
 }
 .nav-links a:hover { color: var(--white); }
@@ -174,7 +188,7 @@ nav.scrolled {
   left: 50%;
   width: 500px;
   height: 500px;
-  border: 2px solid rgba(39, 185, 235, 0.08);
+  border: 2px solid rgba(232, 96, 44, 0.08);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   animation: courtPulse 4s ease-in-out infinite;
@@ -186,7 +200,7 @@ nav.scrolled {
   left: 50%;
   width: 280px;
   height: 280px;
-  border: 1.5px solid rgba(39, 185, 235, 0.06);
+  border: 1.5px solid rgba(107, 173, 224, 0.08);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   animation: courtPulse 4s ease-in-out infinite 1s;
@@ -204,7 +218,7 @@ nav.scrolled {
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(39,185,235,0.07), transparent);
+  background: linear-gradient(90deg, transparent, rgba(232,96,44,0.06), transparent);
 }
 .court-line-v {
   position: absolute;
@@ -212,7 +226,7 @@ nav.scrolled {
   top: 0;
   bottom: 0;
   width: 1px;
-  background: linear-gradient(180deg, transparent, rgba(39,185,235,0.07), transparent);
+  background: linear-gradient(180deg, transparent, rgba(107,173,224,0.06), transparent);
 }
 
 /* Gradient wash */
@@ -220,9 +234,9 @@ nav.scrolled {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 80% 60% at 50% 40%, rgba(13, 110, 143, 0.12) 0%, transparent 70%),
-    radial-gradient(ellipse 40% 50% at 80% 20%, rgba(39, 185, 235, 0.06) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 40% at 15% 80%, rgba(13, 110, 143, 0.08) 0%, transparent 60%);
+    radial-gradient(ellipse 80% 60% at 50% 40%, rgba(232, 96, 44, 0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 50% at 80% 20%, rgba(107, 173, 224, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 15% 80%, rgba(232, 96, 44, 0.05) 0%, transparent 60%);
 }
 
 /* Diagonal slash */
@@ -232,7 +246,7 @@ nav.scrolled {
   top: -20%;
   width: 45%;
   height: 140%;
-  background: linear-gradient(165deg, transparent 40%, rgba(39, 185, 235, 0.03) 40%, rgba(39, 185, 235, 0.03) 42%, transparent 42%);
+  background: linear-gradient(165deg, transparent 40%, rgba(232, 96, 44, 0.03) 40%, rgba(232, 96, 44, 0.03) 42%, transparent 42%);
 }
 
 .hero-content {
@@ -241,11 +255,20 @@ nav.scrolled {
   text-align: center;
   padding: 0 2rem;
 }
+.hero-logo {
+  width: 160px;
+  height: 160px;
+  object-fit: contain;
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeUp 1s 0.2s forwards;
+  filter: drop-shadow(0 0 40px rgba(232, 96, 44, 0.15));
+}
 .hero-eyebrow {
   font-size: 0.75rem;
   letter-spacing: 0.4em;
   text-transform: uppercase;
-  color: var(--cyan);
+  color: var(--orange);
   margin-bottom: 1.5rem;
   font-weight: 500;
   opacity: 0;
@@ -264,7 +287,7 @@ nav.scrolled {
   display: block;
 }
 .hero-title .outline {
-  -webkit-text-stroke: 1.5px var(--white);
+  -webkit-text-stroke: 1.5px var(--sky);
   color: transparent;
 }
 .hero-subtitle {
@@ -282,8 +305,8 @@ nav.scrolled {
   align-items: center;
   gap: 0.75rem;
   padding: 1rem 2.5rem;
-  background: var(--cyan);
-  color: var(--black);
+  background: var(--orange);
+  color: var(--white);
   text-decoration: none;
   font-weight: 600;
   font-size: 0.8rem;
@@ -299,7 +322,7 @@ nav.scrolled {
 }
 .hero-cta:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(39, 185, 235, 0.25);
+  box-shadow: 0 12px 40px var(--orange-glow);
 }
 .hero-cta svg {
   width: 16px;
@@ -332,7 +355,7 @@ nav.scrolled {
 .hero-scroll .scroll-line {
   width: 1px;
   height: 40px;
-  background: linear-gradient(to bottom, var(--cyan), transparent);
+  background: linear-gradient(to bottom, var(--orange), transparent);
   animation: scrollPulse 2s ease-in-out infinite;
 }
 @keyframes scrollPulse {
@@ -346,7 +369,7 @@ section { padding: 8rem 3rem; position: relative; }
   font-size: 0.7rem;
   letter-spacing: 0.4em;
   text-transform: uppercase;
-  color: var(--cyan);
+  color: var(--orange);
   margin-bottom: 1.5rem;
   font-weight: 500;
 }
@@ -359,8 +382,8 @@ section { padding: 8rem 3rem; position: relative; }
 }
 .section-divider {
   width: 60px;
-  height: 2px;
-  background: var(--cyan);
+  height: 3px;
+  background: linear-gradient(90deg, var(--orange), var(--sky));
   margin-bottom: 2rem;
 }
 
@@ -398,12 +421,12 @@ section { padding: 8rem 3rem; position: relative; }
   left: 0;
   width: 40px;
   height: 2px;
-  background: var(--cyan);
+  background: var(--orange);
 }
 .stat-number {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 3rem;
-  color: var(--cyan);
+  color: var(--orange);
   line-height: 1;
   margin-bottom: 0.4rem;
 }
@@ -439,13 +462,13 @@ section { padding: 8rem 3rem; position: relative; }
 }
 .program-card:hover {
   transform: translateY(-8px);
-  border-color: rgba(39, 185, 235, 0.3);
+  border-color: rgba(232, 96, 44, 0.3);
 }
 .program-card::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(39, 185, 235, 0.04) 0%, transparent 60%);
+  background: linear-gradient(135deg, rgba(232, 96, 44, 0.04) 0%, transparent 60%);
   opacity: 0;
   transition: opacity 0.4s;
 }
@@ -454,7 +477,7 @@ section { padding: 8rem 3rem; position: relative; }
 .program-number {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 5rem;
-  color: rgba(39, 185, 235, 0.06);
+  color: rgba(232, 96, 44, 0.08);
   line-height: 1;
   position: absolute;
   top: 1.5rem;
@@ -464,7 +487,7 @@ section { padding: 8rem 3rem; position: relative; }
   width: 48px;
   height: 48px;
   margin-bottom: 2rem;
-  color: var(--cyan);
+  color: var(--orange);
 }
 .program-name {
   font-family: 'Bebas Neue', sans-serif;
@@ -498,7 +521,7 @@ section { padding: 8rem 3rem; position: relative; }
   content: '';
   width: 4px;
   height: 4px;
-  background: var(--cyan);
+  background: var(--orange);
   flex-shrink: 0;
 }
 
@@ -528,7 +551,7 @@ section { padding: 8rem 3rem; position: relative; }
   font-family: 'Bebas Neue', sans-serif;
   font-size: 1rem;
   letter-spacing: 0.1em;
-  color: var(--cyan);
+  color: var(--orange);
 }
 .schedule-info h4 {
   font-family: 'Bebas Neue', sans-serif;
@@ -569,7 +592,7 @@ section { padding: 8rem 3rem; position: relative; }
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  color: var(--cyan);
+  color: var(--orange);
   text-decoration: none;
   font-size: 0.8rem;
   letter-spacing: 0.1em;
@@ -594,7 +617,7 @@ section { padding: 8rem 3rem; position: relative; }
 }
 .instagram-card:hover {
   transform: translateY(-4px);
-  border-color: rgba(39, 185, 235, 0.3);
+  border-color: rgba(232, 96, 44, 0.3);
 }
 .instagram-card .card-visual {
   aspect-ratio: 1;
@@ -675,7 +698,7 @@ section { padding: 8rem 3rem; position: relative; }
   text-decoration: none;
   font-weight: 300;
 }
-.contact-info a:hover { color: var(--cyan); }
+.contact-info a:hover { color: var(--orange); }
 .contact-social {
   display: flex;
   gap: 1rem;
@@ -692,9 +715,9 @@ section { padding: 8rem 3rem; position: relative; }
   transition: color 0.3s, border-color 0.3s, background 0.3s;
 }
 .contact-social a:hover {
-  color: var(--cyan);
-  border-color: var(--cyan);
-  background: rgba(39, 185, 235, 0.05);
+  color: var(--orange);
+  border-color: var(--orange);
+  background: rgba(232, 96, 44, 0.05);
 }
 .contact-social a svg { width: 18px; height: 18px; }
 
@@ -724,7 +747,7 @@ section { padding: 8rem 3rem; position: relative; }
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
-  border-color: var(--cyan);
+  border-color: var(--orange);
 }
 .form-group textarea { min-height: 130px; resize: vertical; }
 .form-group select option { background: var(--black); }
@@ -747,9 +770,9 @@ section { padding: 8rem 3rem; position: relative; }
   align-self: flex-start;
 }
 .form-submit:hover {
-  background: var(--cyan);
-  border-color: var(--cyan);
-  color: var(--black);
+  background: var(--orange);
+  border-color: var(--orange);
+  color: var(--white);
 }
 
 /* ── FOOTER ── */
@@ -771,7 +794,7 @@ footer {
   font-size: 1.4rem;
   letter-spacing: 0.15em;
 }
-.footer-brand .accent { color: var(--cyan); }
+.footer-brand .accent { color: var(--orange); }
 .footer-links {
   display: flex;
   gap: 2rem;
@@ -856,6 +879,7 @@ footer {
 <!-- NAVIGATION -->
 <nav id="nav">
   <a href="#" class="nav-logo">
+    <img src="logo.png" alt="Mana Basketball Logo">
     MANA<span class="logo-accent"> BASKETBALL</span>
   </a>
   <ul class="nav-links" id="navLinks">
@@ -880,6 +904,7 @@ footer {
   <div class="hero-slash"></div>
 
   <div class="hero-content">
+    <img src="logo.png" alt="Mana Basketball" class="hero-logo">
     <p class="hero-eyebrow">California Basketball Training</p>
     <h1 class="hero-title">
       <span class="line">MANA</span>
@@ -1063,7 +1088,7 @@ footer {
 
     <div class="instagram-grid">
       <div class="instagram-card reveal reveal-delay-1">
-        <div class="card-visual" style="background: linear-gradient(135deg, #0D6E8F 0%, #181818 100%);">
+        <div class="card-visual" style="background: linear-gradient(135deg, #E8602C 0%, #181818 100%);">
           <div class="ig-placeholder">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/></svg>
           </div>
@@ -1077,7 +1102,7 @@ footer {
         </div>
       </div>
       <div class="instagram-card reveal reveal-delay-2">
-        <div class="card-visual" style="background: linear-gradient(135deg, #27B9EB 0%, #0D6E8F 100%);">
+        <div class="card-visual" style="background: linear-gradient(135deg, #6BADE0 0%, #0D6E8F 100%);">
           <div class="ig-placeholder">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/></svg>
           </div>
@@ -1091,7 +1116,7 @@ footer {
         </div>
       </div>
       <div class="instagram-card reveal reveal-delay-3">
-        <div class="card-visual" style="background: linear-gradient(135deg, #181818 0%, #27B9EB 100%);">
+        <div class="card-visual" style="background: linear-gradient(135deg, #E8602C 0%, #6BADE0 100%);">
           <div class="ig-placeholder">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/></svg>
           </div>
@@ -1230,9 +1255,9 @@ function handleSubmit(e) {
   e.preventDefault();
   const btn = e.target.querySelector('.form-submit');
   btn.textContent = 'Message Sent!';
-  btn.style.background = 'var(--cyan)';
-  btn.style.borderColor = 'var(--cyan)';
-  btn.style.color = 'var(--black)';
+  btn.style.background = 'var(--orange)';
+  btn.style.borderColor = 'var(--orange)';
+  btn.style.color = 'var(--white)';
   setTimeout(() => {
     btn.innerHTML = 'Send Message <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
     btn.style.background = '';
