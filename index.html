@@ -38,6 +38,10 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
 
 /* ── GRAIN OVERLAY ── */
 body::after {
@@ -172,6 +176,7 @@ nav.scrolled .nav-logo img {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  max-width: 100vw;
 }
 
 .hero-court {
@@ -256,13 +261,17 @@ nav.scrolled .nav-logo img {
   padding: 0 2rem;
 }
 .hero-logo {
-  width: 160px;
-  height: 160px;
+  width: 140px;
+  height: 140px;
   object-fit: contain;
   margin-bottom: 2rem;
   opacity: 0;
   animation: fadeUp 1s 0.2s forwards;
   filter: drop-shadow(0 0 40px rgba(232, 96, 44, 0.15));
+  border-radius: 50%;
+}
+.nav-logo img {
+  border-radius: 50%;
 }
 .hero-eyebrow {
   font-size: 0.75rem;
@@ -276,12 +285,14 @@ nav.scrolled .nav-logo img {
 }
 .hero-title {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(4.5rem, 14vw, 12rem);
+  font-size: clamp(3.2rem, 12vw, 12rem);
   line-height: 0.9;
   letter-spacing: 0.04em;
   margin-bottom: 1.5rem;
   opacity: 0;
   animation: fadeUp 1s 0.5s forwards;
+  max-width: 100%;
+  word-break: break-word;
 }
 .hero-title .line {
   display: block;
@@ -364,7 +375,7 @@ nav.scrolled .nav-logo img {
 }
 
 /* ── SECTION COMMON ── */
-section { padding: 8rem 3rem; position: relative; }
+section { padding: 8rem 3rem; position: relative; overflow: hidden; }
 .section-label {
   font-size: 0.7rem;
   letter-spacing: 0.4em;
@@ -869,8 +880,10 @@ footer {
 }
 
 @media (max-width: 480px) {
-  .hero-title { font-size: clamp(3.5rem, 18vw, 6rem); }
+  .hero-title { font-size: clamp(2.8rem, 13vw, 5rem); }
+  .hero-logo { width: 110px; height: 110px; }
   .about-stats { grid-template-columns: 1fr; }
+  section { padding: 4rem 1.25rem; }
 }
 </style>
 </head>
