@@ -593,76 +593,38 @@ section { padding: 8rem 3rem; position: relative; overflow: hidden; }
 .instagram-follow:hover { color: var(--white); }
 .instagram-follow svg { width: 18px; height: 18px; }
 
-.instagram-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-}
-
-.instagram-card {
-  background: var(--black);
-  border: 1px solid var(--border);
-  overflow: hidden;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s;
-}
-.instagram-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(232, 96, 44, 0.3);
-}
-.instagram-card .card-visual {
-  aspect-ratio: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-}
-.instagram-card .card-visual .ig-placeholder {
+.instagram-embed-grid {
   width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  color: var(--gray);
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-.instagram-card .card-visual .ig-placeholder svg {
-  width: 32px;
-  height: 32px;
-  opacity: 0.4;
-}
-.instagram-card .card-body {
-  padding: 1.25rem 1.5rem;
-}
-.instagram-card .card-body p {
-  color: var(--gray);
-  font-size: 0.82rem;
-  line-height: 1.6;
-  font-weight: 300;
-}
-.instagram-card .card-meta {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.8rem;
-  color: rgba(255,255,255,0.25);
-  font-size: 0.7rem;
-}
-
-/* Instagram embed fallback */
-.ig-embed-wrapper {
-  position: relative;
-  width: 100%;
-  max-width: 1200px;
+  max-width: 540px;
   margin: 0 auto;
 }
-.ig-embed-wrapper iframe {
-  border: none;
+.instagram-embed-grid .ig-embed-item {
   width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  background: #111;
+}
+.instagram-embed-grid .ig-embed-item iframe {
+  display: block;
+}
+.ig-view-all-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2.5rem;
+  border: 1px solid var(--border);
+  color: var(--white);
+  text-decoration: none;
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 500;
+  transition: border-color 0.3s, background 0.3s;
+}
+.ig-view-all-btn:hover {
+  border-color: var(--orange);
+  background: rgba(232, 96, 44, 0.08);
 }
 
 /* ── CONTACT ── */
@@ -1089,54 +1051,17 @@ footer {
       </a>
     </div>
 
-    <div class="instagram-grid">
-      <div class="instagram-card reveal reveal-delay-1">
-        <div class="card-visual" style="background: linear-gradient(135deg, #E8602C 0%, #181818 100%);">
-          <div class="ig-placeholder">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/></svg>
-          </div>
-        </div>
-        <div class="card-body">
-          <p>Game day energy. Our elite squad putting in work before the spring showcase. No days off.</p>
-          <div class="card-meta">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-            <span>@manabasketballca</span>
-          </div>
-        </div>
-      </div>
-      <div class="instagram-card reveal reveal-delay-2">
-        <div class="card-visual" style="background: linear-gradient(135deg, #6BADE0 0%, #0D6E8F 100%);">
-          <div class="ig-placeholder">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/></svg>
-          </div>
-        </div>
-        <div class="card-body">
-          <p>Building champions one rep at a time. Youth development clinic highlights from this weekend.</p>
-          <div class="card-meta">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-            <span>@manabasketballca</span>
-          </div>
-        </div>
-      </div>
-      <div class="instagram-card reveal reveal-delay-3">
-        <div class="card-visual" style="background: linear-gradient(135deg, #E8602C 0%, #6BADE0 100%);">
-          <div class="ig-placeholder">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/></svg>
-          </div>
-        </div>
-        <div class="card-body">
-          <p>The grind doesn't stop. Summer training registration is now open — limited spots available.</p>
-          <div class="card-meta">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-            <span>@manabasketballca</span>
-          </div>
-        </div>
+    <div class="instagram-embed-grid reveal" id="ig-feed">
+      <div class="ig-embed-item">
+        <iframe src="https://www.instagram.com/manabasketballca/embed"
+                width="100%" height="600" frameborder="0" scrolling="yes"
+                allowtransparency="true" loading="lazy"
+                style="border: none; border-radius: 4px; background: #111;"></iframe>
       </div>
     </div>
 
-    <!-- Live Instagram Embed -->
     <div style="margin-top: 3rem; text-align: center;" class="reveal reveal-delay-2">
-      <a href="https://www.instagram.com/manabasketballca" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 0.75rem; padding: 1rem 2.5rem; border: 1px solid var(--border); color: var(--white); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; transition: border-color 0.3s, background 0.3s;">
+      <a href="https://www.instagram.com/manabasketballca" target="_blank" rel="noopener" class="ig-view-all-btn">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
         View All Posts on Instagram
       </a>
