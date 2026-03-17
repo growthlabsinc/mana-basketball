@@ -179,84 +179,78 @@ nav.scrolled .nav-logo img {
   max-width: 100vw;
 }
 
-.hero-court {
+/* YouTube Video Background */
+.hero-video-bg {
   position: absolute;
   inset: 0;
+  z-index: 0;
   overflow: hidden;
 }
-
-/* Animated court lines */
-.hero-court::before {
-  content: '';
+.hero-video-bg iframe {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 500px;
-  height: 500px;
-  border: 2px solid rgba(232, 96, 44, 0.08);
-  border-radius: 50%;
+  width: 120vw;
+  height: 120vh;
+  min-width: 120vw;
+  min-height: 120vh;
   transform: translate(-50%, -50%);
-  animation: courtPulse 4s ease-in-out infinite;
+  pointer-events: none;
 }
-.hero-court::after {
-  content: '';
+/* Dark overlay on video */
+.hero-video-overlay {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 280px;
-  height: 280px;
-  border: 1.5px solid rgba(107, 173, 224, 0.08);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  animation: courtPulse 4s ease-in-out infinite 1s;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(to bottom, rgba(10,10,10,0.6) 0%, rgba(10,10,10,0.4) 40%, rgba(10,10,10,0.7) 100%),
+    radial-gradient(ellipse 80% 60% at 50% 40%, rgba(232, 96, 44, 0.06) 0%, transparent 70%);
 }
 
-@keyframes courtPulse {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-  50% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.5; }
-}
-
-/* Court center line */
-.court-line-h {
+/* Hero people images */
+.hero-people {
   position: absolute;
-  top: 50%;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  max-width: 1400px;
+  margin: 0 auto;
   left: 0;
   right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(232,96,44,0.06), transparent);
 }
-.court-line-v {
+.hero-person {
   position: absolute;
-  left: 50%;
-  top: 0;
   bottom: 0;
-  width: 1px;
-  background: linear-gradient(180deg, transparent, rgba(107,173,224,0.06), transparent);
+  height: 70%;
+  max-height: 650px;
+  width: auto;
+  object-fit: contain;
+  filter: brightness(0.9) contrast(1.1);
+  mix-blend-mode: lighten;
+  opacity: 0;
+  animation: fadeUp 1.2s 0.4s forwards;
+}
+.hero-person.coach {
+  left: 2%;
+}
+.hero-person.player {
+  right: 2%;
 }
 
 /* Gradient wash */
 .hero-gradient {
   position: absolute;
   inset: 0;
+  z-index: 1;
   background:
     radial-gradient(ellipse 80% 60% at 50% 40%, rgba(232, 96, 44, 0.08) 0%, transparent 70%),
     radial-gradient(ellipse 40% 50% at 80% 20%, rgba(107, 173, 224, 0.08) 0%, transparent 60%),
     radial-gradient(ellipse 50% 40% at 15% 80%, rgba(232, 96, 44, 0.05) 0%, transparent 60%);
 }
 
-/* Diagonal slash */
-.hero-slash {
-  position: absolute;
-  right: -10%;
-  top: -20%;
-  width: 45%;
-  height: 140%;
-  background: linear-gradient(165deg, transparent 40%, rgba(232, 96, 44, 0.03) 40%, rgba(232, 96, 44, 0.03) 42%, transparent 42%);
-}
-
 .hero-content {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   text-align: center;
   padding: 0 2rem;
 }
@@ -348,6 +342,7 @@ nav.scrolled .nav-logo img {
   bottom: 2.5rem;
   left: 50%;
   transform: translateX(-50%);
+  z-index: 3;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -873,6 +868,10 @@ footer {
   .about-stats { grid-template-columns: 1fr 1fr; gap: 1rem; }
   .stat { padding: 1.5rem; }
   .stat-number { font-size: 2.2rem; }
+  .hero-person { height: 50%; max-height: 400px; }
+  .hero-person.coach { left: -5%; }
+  .hero-person.player { right: -5%; }
+  .hero-video-bg iframe { width: 300vw; height: 100vh; }
 }
 
 @media (max-width: 480px) {
@@ -880,6 +879,7 @@ footer {
   .hero-logo { width: 110px; height: 110px; }
   .about-stats { grid-template-columns: 1fr; }
   section { padding: 4rem 1.25rem; }
+  .hero-person { display: none; }
 }
 </style>
 </head>
@@ -905,12 +905,18 @@ footer {
 
 <!-- HERO -->
 <section class="hero" id="home">
-  <div class="hero-court">
-    <div class="court-line-h"></div>
-    <div class="court-line-v"></div>
+  <!-- YouTube Video Background -->
+  <div class="hero-video-bg">
+    <iframe src="https://www.youtube.com/embed/T1VOVArT9YI?autoplay=1&mute=1&loop=1&playlist=T1VOVArT9YI&controls=0&showinfo=0&modestbranding=1&rel=0&playsinline=1&enablejsapi=1&iv_load_policy=3&disablekb=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
   </div>
+  <div class="hero-video-overlay"></div>
   <div class="hero-gradient"></div>
-  <div class="hero-slash"></div>
+
+  <!-- Coach & Player images -->
+  <div class="hero-people">
+    <img src="coach.png" alt="Mana Basketball Coach" class="hero-person coach">
+    <img src="player.png" alt="Mana Basketball Player" class="hero-person player">
+  </div>
 
   <div class="hero-content">
     <img src="logo.png" alt="Mana Basketball" class="hero-logo">
