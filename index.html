@@ -175,7 +175,7 @@ nav {
 .hero-video-bg video {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center center;
 }
 .hero-video-bg::after {
@@ -796,6 +796,7 @@ footer {
   .about-stats { grid-template-columns: 1fr; }
   section { padding: 4rem 1.25rem; }
   .hero-video-wrapper { height: 160vh; }
+  .hero-video-bg video { object-fit: cover; }
 }
 </style>
 </head>
