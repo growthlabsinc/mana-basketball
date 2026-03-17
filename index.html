@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MANA Basketball — Elevate Your Game</title>
+<meta name="description" content="Mana Basketball — Premier basketball training and player development in California. Youth programs, elite training, and team camps.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --black: #0a0a0a;
+  --navy: #181818;
+  --teal: #0D6E8F;
+  --cyan: #27B9EB;
+  --white: #f0f0f0;
+  --gray: #888;
+  --card-bg: #141414;
+  --border: rgba(39, 185, 235, 0.12);
+}
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--teal) var(--black);
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--black);
+  color: var(--white);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── GRAIN OVERLAY ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 128px 128px;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-thumb { background: var(--teal); border-radius: 3px; }
+
+/* ── REVEAL ANIMATIONS ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(60px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ── NAVIGATION ── */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 1.25rem 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background 0.4s, backdrop-filter 0.4s, padding 0.4s;
+}
+nav.scrolled {
+  background: rgba(10, 10, 10, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 0.8rem 3rem;
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.8rem;
+  letter-spacing: 0.15em;
+  color: var(--white);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.nav-logo .logo-accent {
+  color: var(--cyan);
+}
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 2.5rem;
+  align-items: center;
+}
+.nav-links a {
+  color: var(--gray);
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  transition: color 0.3s;
+  position: relative;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--cyan);
+  transition: width 0.3s;
+}
+.nav-links a:hover { color: var(--white); }
+.nav-links a:hover::after { width: 100%; }
+
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px;
+}
+.menu-toggle span {
+  display: block;
+  width: 26px;
+  height: 2px;
+  background: var(--white);
+  transition: transform 0.3s, opacity 0.3s;
+}
+.menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.menu-toggle.active span:nth-child(2) { opacity: 0; }
+.menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+/* ── HERO ── */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hero-court {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* Animated court lines */
+.hero-court::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 500px;
+  height: 500px;
+  border: 2px solid rgba(39, 185, 235, 0.08);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: courtPulse 4s ease-in-out infinite;
+}
+.hero-court::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 280px;
+  height: 280px;
+  border: 1.5px solid rgba(39, 185, 235, 0.06);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: courtPulse 4s ease-in-out infinite 1s;
+}
+
+@keyframes courtPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  50% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.5; }
+}
+
+/* Court center line */
+.court-line-h {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(39,185,235,0.07), transparent);
+}
+.court-line-v {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(39,185,235,0.07), transparent);
+}
+
+/* Gradient wash */
+.hero-gradient {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 40%, rgba(13, 110, 143, 0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 50% at 80% 20%, rgba(39, 185, 235, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 15% 80%, rgba(13, 110, 143, 0.08) 0%, transparent 60%);
+}
+
+/* Diagonal slash */
+.hero-slash {
+  position: absolute;
+  right: -10%;
+  top: -20%;
+  width: 45%;
+  height: 140%;
+  background: linear-gradient(165deg, transparent 40%, rgba(39, 185, 235, 0.03) 40%, rgba(39, 185, 235, 0.03) 42%, transparent 42%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 0 2rem;
+}
+.hero-eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+  opacity: 0;
+  animation: fadeUp 1s 0.3s forwards;
+}
+.hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(4.5rem, 14vw, 12rem);
+  line-height: 0.9;
+  letter-spacing: 0.04em;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: fadeUp 1s 0.5s forwards;
+}
+.hero-title .line {
+  display: block;
+}
+.hero-title .outline {
+  -webkit-text-stroke: 1.5px var(--white);
+  color: transparent;
+}
+.hero-subtitle {
+  font-size: 1rem;
+  color: var(--gray);
+  max-width: 440px;
+  margin: 0 auto 2.5rem;
+  line-height: 1.7;
+  font-weight: 300;
+  opacity: 0;
+  animation: fadeUp 1s 0.7s forwards;
+}
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2.5rem;
+  background: var(--cyan);
+  color: var(--black);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+  opacity: 0;
+  animation: fadeUp 1s 0.9s forwards;
+}
+.hero-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(39, 185, 235, 0.25);
+}
+.hero-cta svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.3s;
+}
+.hero-cta:hover svg { transform: translateX(4px); }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-scroll {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--gray);
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: fadeUp 1s 1.2s forwards;
+}
+.hero-scroll .scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--cyan), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse {
+  0%, 100% { transform: scaleY(1); opacity: 1; }
+  50% { transform: scaleY(0.5); opacity: 0.3; }
+}
+
+/* ── SECTION COMMON ── */
+section { padding: 8rem 3rem; position: relative; }
+.section-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.8rem, 6vw, 5rem);
+  letter-spacing: 0.03em;
+  line-height: 1;
+  margin-bottom: 2rem;
+}
+.section-divider {
+  width: 60px;
+  height: 2px;
+  background: var(--cyan);
+  margin-bottom: 2rem;
+}
+
+/* ── ABOUT ── */
+.about {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: center;
+}
+.about-text p {
+  color: var(--gray);
+  line-height: 1.9;
+  font-size: 0.95rem;
+  font-weight: 300;
+  margin-bottom: 1.5rem;
+}
+.about-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+}
+.stat {
+  position: relative;
+  padding: 2rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+}
+.stat::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background: var(--cyan);
+}
+.stat-number {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3rem;
+  color: var(--cyan);
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+.stat-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+
+/* ── PROGRAMS ── */
+#programs {
+  background: var(--navy);
+}
+.programs-header {
+  max-width: 1200px;
+  margin: 0 auto 4rem;
+}
+.programs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.program-card {
+  position: relative;
+  padding: 3rem 2.5rem;
+  background: var(--black);
+  border: 1px solid var(--border);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s;
+  overflow: hidden;
+}
+.program-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(39, 185, 235, 0.3);
+}
+.program-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(39, 185, 235, 0.04) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.program-card:hover::before { opacity: 1; }
+
+.program-number {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 5rem;
+  color: rgba(39, 185, 235, 0.06);
+  line-height: 1;
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+}
+.program-icon {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 2rem;
+  color: var(--cyan);
+}
+.program-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.8rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+  position: relative;
+}
+.program-desc {
+  color: var(--gray);
+  font-size: 0.9rem;
+  line-height: 1.8;
+  font-weight: 300;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+.program-details {
+  list-style: none;
+  position: relative;
+}
+.program-details li {
+  color: var(--gray);
+  font-size: 0.8rem;
+  padding: 0.5rem 0;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.program-details li::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  background: var(--cyan);
+  flex-shrink: 0;
+}
+
+/* ── SCHEDULE ── */
+.schedule-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.schedule-grid {
+  display: grid;
+  gap: 1px;
+  background: var(--border);
+}
+.schedule-item {
+  display: grid;
+  grid-template-columns: 140px 1fr auto;
+  gap: 2rem;
+  padding: 2rem 2.5rem;
+  background: var(--black);
+  align-items: center;
+  transition: background 0.3s;
+}
+.schedule-item:hover {
+  background: var(--card-bg);
+}
+.schedule-date {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  color: var(--cyan);
+}
+.schedule-info h4 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.3rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.3rem;
+}
+.schedule-info p {
+  color: var(--gray);
+  font-size: 0.8rem;
+  font-weight: 300;
+}
+.schedule-time {
+  font-size: 0.8rem;
+  color: var(--gray);
+  font-weight: 300;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ── INSTAGRAM ── */
+#instagram {
+  background: var(--navy);
+}
+.instagram-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.instagram-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.instagram-follow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--cyan);
+  text-decoration: none;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+.instagram-follow:hover { color: var(--white); }
+.instagram-follow svg { width: 18px; height: 18px; }
+
+.instagram-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.instagram-card {
+  background: var(--black);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s;
+}
+.instagram-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(39, 185, 235, 0.3);
+}
+.instagram-card .card-visual {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.instagram-card .card-visual .ig-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: var(--gray);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.instagram-card .card-visual .ig-placeholder svg {
+  width: 32px;
+  height: 32px;
+  opacity: 0.4;
+}
+.instagram-card .card-body {
+  padding: 1.25rem 1.5rem;
+}
+.instagram-card .card-body p {
+  color: var(--gray);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  font-weight: 300;
+}
+.instagram-card .card-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.8rem;
+  color: rgba(255,255,255,0.25);
+  font-size: 0.7rem;
+}
+
+/* Instagram embed fallback */
+.ig-embed-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.ig-embed-wrapper iframe {
+  border: none;
+  width: 100%;
+}
+
+/* ── CONTACT ── */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.contact-info h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 1.5rem;
+  margin-top: 2.5rem;
+}
+.contact-info h3:first-child { margin-top: 0; }
+.contact-info p, .contact-info a {
+  color: var(--gray);
+  font-size: 0.9rem;
+  line-height: 1.8;
+  text-decoration: none;
+  font-weight: 300;
+}
+.contact-info a:hover { color: var(--cyan); }
+.contact-social {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.contact-social a {
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray);
+  transition: color 0.3s, border-color 0.3s, background 0.3s;
+}
+.contact-social a:hover {
+  color: var(--cyan);
+  border-color: var(--cyan);
+  background: rgba(39, 185, 235, 0.05);
+}
+.contact-social a svg { width: 18px; height: 18px; }
+
+.contact-form { display: flex; flex-direction: column; gap: 1.25rem; }
+.form-group { position: relative; }
+.form-group label {
+  display: block;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin-bottom: 0.5rem;
+}
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 1rem 1.25rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.3s;
+}
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: var(--cyan);
+}
+.form-group textarea { min-height: 130px; resize: vertical; }
+.form-group select option { background: var(--black); }
+
+.form-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.1rem 2.5rem;
+  background: transparent;
+  color: var(--white);
+  border: 1px solid var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s, border-color 0.3s;
+  align-self: flex-start;
+}
+.form-submit:hover {
+  background: var(--cyan);
+  border-color: var(--cyan);
+  color: var(--black);
+}
+
+/* ── FOOTER ── */
+footer {
+  padding: 4rem 3rem;
+  border-top: 1px solid var(--border);
+}
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+.footer-brand {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: 0.15em;
+}
+.footer-brand .accent { color: var(--cyan); }
+.footer-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+.footer-links a {
+  color: var(--gray);
+  text-decoration: none;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: color 0.3s;
+}
+.footer-links a:hover { color: var(--white); }
+.footer-copy {
+  width: 100%;
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.2);
+  font-size: 0.75rem;
+  font-weight: 300;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+  .about { grid-template-columns: 1fr; gap: 3rem; }
+  .programs-grid { grid-template-columns: 1fr 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .instagram-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 768px) {
+  section { padding: 5rem 1.5rem; }
+  nav { padding: 1rem 1.5rem; }
+  nav.scrolled { padding: 0.8rem 1.5rem; }
+
+  .nav-links {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(10, 10, 10, 0.97);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2.5rem;
+    transform: translateX(100%);
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .nav-links.open { transform: translateX(0); }
+  .nav-links a {
+    font-size: 1rem;
+    letter-spacing: 0.3em;
+  }
+  .menu-toggle { display: flex; z-index: 1001; }
+
+  .programs-grid { grid-template-columns: 1fr; }
+  .instagram-grid { grid-template-columns: 1fr; }
+  .schedule-item {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  .schedule-time { text-align: left; }
+  .about-stats { grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .stat { padding: 1.5rem; }
+  .stat-number { font-size: 2.2rem; }
+}
+
+@media (max-width: 480px) {
+  .hero-title { font-size: clamp(3.5rem, 18vw, 6rem); }
+  .about-stats { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    MANA<span class="logo-accent"> BASKETBALL</span>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about" onclick="closeMenu()">About</a></li>
+    <li><a href="#programs" onclick="closeMenu()">Programs</a></li>
+    <li><a href="#schedule" onclick="closeMenu()">Schedule</a></li>
+    <li><a href="#instagram" onclick="closeMenu()">Instagram</a></li>
+    <li><a href="#contact" onclick="closeMenu()">Contact</a></li>
+  </ul>
+  <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-court">
+    <div class="court-line-h"></div>
+    <div class="court-line-v"></div>
+  </div>
+  <div class="hero-gradient"></div>
+  <div class="hero-slash"></div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">California Basketball Training</p>
+    <h1 class="hero-title">
+      <span class="line">MANA</span>
+      <span class="line outline">BASKETBALL</span>
+    </h1>
+    <p class="hero-subtitle">
+      Unlock your potential. Elite player development for athletes who refuse to settle.
+    </p>
+    <a href="#programs" class="hero-cta">
+      Explore Programs
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about">
+    <div class="about-text reveal">
+      <p class="section-label">About Us</p>
+      <h2 class="section-title">Built on<br>the Court</h2>
+      <div class="section-divider"></div>
+      <p>
+        Mana Basketball is a premier training organization in California dedicated to developing the next generation of basketball talent. Our philosophy centers on building complete players — combining elite skill work with mental toughness and game IQ.
+      </p>
+      <p>
+        Whether you're a young athlete taking your first steps on the court or an experienced player pushing toward the next level, our coaching staff brings decades of competitive experience to every session. We don't just train players — we build competitors.
+      </p>
+    </div>
+    <div class="about-stats reveal reveal-delay-2">
+      <div class="stat">
+        <div class="stat-number">500+</div>
+        <div class="stat-label">Athletes Trained</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">10+</div>
+        <div class="stat-label">Years Coaching</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">50+</div>
+        <div class="stat-label">College Placements</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">365</div>
+        <div class="stat-label">Days of Hoops</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAMS -->
+<section id="programs">
+  <div class="programs-header reveal">
+    <p class="section-label">What We Offer</p>
+    <h2 class="section-title">Programs</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="programs-grid">
+    <div class="program-card reveal reveal-delay-1">
+      <div class="program-number">01</div>
+      <svg class="program-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="24" cy="24" r="20"/><path d="M24 4v40M4 24h40M8 10c8 6 16 6 24 0M8 38c8-6 16-6 24 0"/>
+      </svg>
+      <h3 class="program-name">Youth Development</h3>
+      <p class="program-desc">
+        Building foundations that last a lifetime. Our youth program focuses on fundamentals, coordination, and a genuine love for the game.
+      </p>
+      <ul class="program-details">
+        <li>Ages 8–14</li>
+        <li>Fundamentals & footwork</li>
+        <li>Small group sessions</li>
+        <li>Weekend clinics available</li>
+      </ul>
+    </div>
+    <div class="program-card reveal reveal-delay-2">
+      <div class="program-number">02</div>
+      <svg class="program-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M24 4L4 14v20l20 10 20-10V14L24 4z"/><path d="M4 14l20 10 20-10M24 24v20"/>
+      </svg>
+      <h3 class="program-name">Elite Training</h3>
+      <p class="program-desc">
+        For committed athletes ready to compete at the highest levels. Advanced skill development, film study, and performance conditioning.
+      </p>
+      <ul class="program-details">
+        <li>Ages 14–18</li>
+        <li>Advanced ball handling & shooting</li>
+        <li>Game film analysis</li>
+        <li>College prep & exposure</li>
+      </ul>
+    </div>
+    <div class="program-card reveal reveal-delay-3">
+      <div class="program-number">03</div>
+      <svg class="program-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="16" cy="16" r="8"/><circle cx="32" cy="16" r="8"/><circle cx="24" cy="32" r="8"/>
+      </svg>
+      <h3 class="program-name">Team Camps</h3>
+      <p class="program-desc">
+        Intensive team-focused training camps designed to build chemistry, sharpen strategy, and prepare squads for competitive play.
+      </p>
+      <ul class="program-details">
+        <li>Full teams & AAU squads</li>
+        <li>Offensive & defensive systems</li>
+        <li>Scrimmage & competition</li>
+        <li>Custom camp packages</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SCHEDULE -->
+<section id="schedule">
+  <div class="schedule-container">
+    <div class="reveal">
+      <p class="section-label">Upcoming</p>
+      <h2 class="section-title">Schedule</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="schedule-grid reveal reveal-delay-1">
+      <div class="schedule-item">
+        <div class="schedule-date">MAR 22, 2026</div>
+        <div class="schedule-info">
+          <h4>Youth Skills Clinic</h4>
+          <p>Open to all skill levels, ages 8–14</p>
+        </div>
+        <div class="schedule-time">9:00 AM – 12:00 PM</div>
+      </div>
+      <div class="schedule-item">
+        <div class="schedule-date">MAR 29, 2026</div>
+        <div class="schedule-info">
+          <h4>Elite Prospect Showcase</h4>
+          <p>Competitive evaluation for advanced players</p>
+        </div>
+        <div class="schedule-time">1:00 PM – 5:00 PM</div>
+      </div>
+      <div class="schedule-item">
+        <div class="schedule-date">APR 05, 2026</div>
+        <div class="schedule-info">
+          <h4>Spring Team Camp — Session 1</h4>
+          <p>Team registration required</p>
+        </div>
+        <div class="schedule-time">10:00 AM – 4:00 PM</div>
+      </div>
+      <div class="schedule-item">
+        <div class="schedule-date">APR 12, 2026</div>
+        <div class="schedule-info">
+          <h4>3v3 Tournament</h4>
+          <p>Open registration, all age divisions</p>
+        </div>
+        <div class="schedule-time">8:00 AM – 6:00 PM</div>
+      </div>
+      <div class="schedule-item">
+        <div class="schedule-date">APR 19, 2026</div>
+        <div class="schedule-info">
+          <h4>College Prep Workshop</h4>
+          <p>Film review, recruiting guidance, and exposure strategy</p>
+        </div>
+        <div class="schedule-time">2:00 PM – 5:00 PM</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSTAGRAM -->
+<section id="instagram">
+  <div class="instagram-container">
+    <div class="instagram-header reveal">
+      <div>
+        <p class="section-label">Follow the Journey</p>
+        <h2 class="section-title">@manabasketballca</h2>
+      </div>
+      <a href="https://www.instagram.com/manabasketballca" target="_blank" rel="noopener" class="instagram-follow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+        Follow on Instagram
+      </a>
+    </div>
+
+    <div class="instagram-grid">
+      <div class="instagram-card reveal reveal-delay-1">
+        <div class="card-visual" style="background: linear-gradient(135deg, #0D6E8F 0%, #181818 100%);">
+          <div class="ig-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/></svg>
+          </div>
+        </div>
+        <div class="card-body">
+          <p>Game day energy. Our elite squad putting in work before the spring showcase. No days off.</p>
+          <div class="card-meta">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            <span>@manabasketballca</span>
+          </div>
+        </div>
+      </div>
+      <div class="instagram-card reveal reveal-delay-2">
+        <div class="card-visual" style="background: linear-gradient(135deg, #27B9EB 0%, #0D6E8F 100%);">
+          <div class="ig-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/></svg>
+          </div>
+        </div>
+        <div class="card-body">
+          <p>Building champions one rep at a time. Youth development clinic highlights from this weekend.</p>
+          <div class="card-meta">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            <span>@manabasketballca</span>
+          </div>
+        </div>
+      </div>
+      <div class="instagram-card reveal reveal-delay-3">
+        <div class="card-visual" style="background: linear-gradient(135deg, #181818 0%, #27B9EB 100%);">
+          <div class="ig-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/></svg>
+          </div>
+        </div>
+        <div class="card-body">
+          <p>The grind doesn't stop. Summer training registration is now open — limited spots available.</p>
+          <div class="card-meta">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            <span>@manabasketballca</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Instagram Embed -->
+    <div style="margin-top: 3rem; text-align: center;" class="reveal reveal-delay-2">
+      <a href="https://www.instagram.com/manabasketballca" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 0.75rem; padding: 1rem 2.5rem; border: 1px solid var(--border); color: var(--white); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; transition: border-color 0.3s, background 0.3s;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+        View All Posts on Instagram
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-grid">
+    <div class="reveal">
+      <p class="section-label">Get in Touch</p>
+      <h2 class="section-title">Contact</h2>
+      <div class="section-divider"></div>
+      <div class="contact-info">
+        <h3>Location</h3>
+        <p>California, United States</p>
+
+        <h3>Email</h3>
+        <a href="mailto:info@manabasketball.com">info@manabasketball.com</a>
+
+        <h3>Follow Us</h3>
+        <div class="contact-social">
+          <a href="https://www.instagram.com/manabasketballca" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="https://www.manabasketball.com" target="_blank" rel="noopener" aria-label="Website">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="reveal reveal-delay-2">
+      <form class="contact-form" onsubmit="handleSubmit(event)">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required placeholder="Your full name">
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+          <label for="program">Program Interest</label>
+          <select id="program" name="program">
+            <option value="">Select a program</option>
+            <option value="youth">Youth Development</option>
+            <option value="elite">Elite Training</option>
+            <option value="camps">Team Camps</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="Tell us about your goals..."></textarea>
+        </div>
+        <button type="submit" class="form-submit">
+          Send Message
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      MANA<span class="accent"> BASKETBALL</span>
+    </div>
+    <ul class="footer-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#programs">Programs</a></li>
+      <li><a href="#schedule">Schedule</a></li>
+      <li><a href="https://www.instagram.com/manabasketballca" target="_blank" rel="noopener">Instagram</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <p class="footer-copy">&copy; 2026 Mana Basketball. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+// ── NAV SCROLL EFFECT ──
+const nav = document.getElementById('nav');
+let lastScroll = 0;
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+
+// ── MOBILE MENU ──
+const menuToggle = document.getElementById('menuToggle');
+const navLinks = document.getElementById('navLinks');
+menuToggle.addEventListener('click', () => {
+  menuToggle.classList.toggle('active');
+  navLinks.classList.toggle('open');
+  document.body.style.overflow = navLinks.classList.contains('open') ? 'hidden' : '';
+});
+function closeMenu() {
+  menuToggle.classList.remove('active');
+  navLinks.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ── SCROLL REVEAL ──
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+reveals.forEach(el => observer.observe(el));
+
+// ── FORM HANDLER ──
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.form-submit');
+  btn.textContent = 'Message Sent!';
+  btn.style.background = 'var(--cyan)';
+  btn.style.borderColor = 'var(--cyan)';
+  btn.style.color = 'var(--black)';
+  setTimeout(() => {
+    btn.innerHTML = 'Send Message <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+    btn.style.background = '';
+    btn.style.borderColor = '';
+    btn.style.color = '';
+    e.target.reset();
+  }, 3000);
+}
+</script>
+</body>
+</html>
