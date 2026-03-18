@@ -344,12 +344,70 @@ section { padding: 8rem 3rem; position: relative; overflow: hidden; background: 
 
 /* ── ABOUT ── */
 .about {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6rem;
-  max-width: 1200px;
+  max-width: 900px;
   margin: 0 auto;
-  align-items: center;
+}
+.about-location {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.3em;
+  color: var(--orange);
+  text-transform: uppercase;
+  margin-bottom: 3rem;
+}
+.about-epigraph {
+  text-align: center;
+  margin-bottom: 4rem;
+  padding: 3rem 2rem;
+  border-left: 2px solid var(--orange);
+  border-right: 2px solid var(--orange);
+}
+.about-epigraph blockquote {
+  font-family: 'DM Sans', sans-serif;
+  font-style: italic;
+  font-size: 1.3rem;
+  line-height: 1.8;
+  color: var(--white);
+  font-weight: 300;
+  margin-bottom: 1rem;
+}
+.about-epigraph cite {
+  font-style: normal;
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+.about-quote {
+  margin-bottom: 3rem;
+  padding-left: 2rem;
+  border-left: 2px solid var(--orange);
+}
+.about-quote p {
+  color: var(--gray);
+  line-height: 1.9;
+  font-size: 0.95rem;
+  font-weight: 300;
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+.about-quote cite {
+  font-style: normal;
+  font-size: 0.85rem;
+  color: var(--orange);
+  letter-spacing: 0.1em;
+}
+.about-mission {
+  margin-top: 3rem;
+  padding: 2.5rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+}
+.about-mission p {
+  color: var(--gray);
+  line-height: 1.9;
+  font-size: 1rem;
+  font-weight: 300;
 }
 .about-text p {
   color: var(--gray);
@@ -746,7 +804,7 @@ footer {
 
 /* ── RESPONSIVE ── */
 @media (max-width: 1024px) {
-  .about { grid-template-columns: 1fr; gap: 3rem; }
+  .about { padding: 0 1rem; }
   .programs-grid { grid-template-columns: 1fr 1fr; }
   .contact-grid { grid-template-columns: 1fr; }
   .ig-posts-grid { grid-template-columns: 1fr 1fr; }
@@ -786,9 +844,8 @@ footer {
     gap: 0.5rem;
   }
   .schedule-time { text-align: left; }
-  .about-stats { grid-template-columns: 1fr 1fr; gap: 1rem; }
-  .stat { padding: 1.5rem; }
-  .stat-number { font-size: 2.2rem; }
+  .about-epigraph blockquote { font-size: 1.1rem; }
+  .about-quote p { font-size: 0.9rem; }
   .hero-video-wrapper { height: 105vh; }
   .hero-video-bg video { object-position: center center; }
 }
@@ -796,7 +853,8 @@ footer {
 @media (max-width: 480px) {
   .hero-title { font-size: clamp(2.8rem, 13vw, 5rem); }
   .hero-logo { width: 110px; height: 110px; }
-  .about-stats { grid-template-columns: 1fr; }
+  .about-epigraph { padding: 2rem 1rem; }
+  .about-epigraph blockquote { font-size: 1rem; }
   section { padding: 4rem 1.25rem; }
   .hero-video-wrapper { height: 105vh; }
 }
@@ -855,34 +913,25 @@ footer {
 <!-- ABOUT -->
 <section id="about">
   <div class="about">
-    <div class="about-text reveal">
-      <p class="section-label">About Us</p>
-      <h2 class="section-title">Built on<br>the Court</h2>
-      <div class="section-divider"></div>
-      <p>
-        Mana Basketball is a premier training organization in California dedicated to developing the next generation of basketball talent. Our philosophy centers on building complete players — combining elite skill work with mental toughness and game IQ.
-      </p>
-      <p>
-        Whether you're a young athlete taking your first steps on the court or an experienced player pushing toward the next level, our coaching staff brings decades of competitive experience to every session. We don't just train players — we build competitors.
-      </p>
+    <p class="section-label reveal">About</p>
+    <h2 class="section-title reveal">Mana Basketball</h2>
+    <p class="about-location reveal">Orange County, CA</p>
+    <div class="section-divider reveal"></div>
+
+    <div class="about-epigraph reveal">
+      <blockquote>&ldquo;The greatest test of courage on earth is to bear defeat without losing heart.&rdquo;</blockquote>
+      <cite>Robert Green Ingersoll</cite>
     </div>
-    <div class="about-stats reveal reveal-delay-2">
-      <div class="stat">
-        <div class="stat-number">500+</div>
-        <div class="stat-label">Athletes Trained</div>
-      </div>
-      <div class="stat">
-        <div class="stat-number">10+</div>
-        <div class="stat-label">Years Coaching</div>
-      </div>
-      <div class="stat">
-        <div class="stat-number">50+</div>
-        <div class="stat-label">College Placements</div>
-      </div>
-      <div class="stat">
-        <div class="stat-number">365</div>
-        <div class="stat-label">Days of Hoops</div>
-      </div>
+
+    <div class="about-quote reveal">
+      <p>&ldquo;AAU basketball, horrible, terrible AAU basketball. It's stupid. It doesn't teach our kids how to play the game at all so you wind up having players that are big and they bring it up and they do all this fancy crap and they don't know how to post. They don't know the fundamentals of the game. It's stupid.&rdquo;</p>
+      <p>&ldquo;Teach players the game at an early age and stop treating them like cash cows for everyone to profit off of.&rdquo;</p>
+      <p>&ldquo;That's how you do that. You have to teach them the game. Give them instruction.&rdquo;</p>
+      <cite>~ Kobe Bryant</cite>
+    </div>
+
+    <div class="about-mission reveal">
+      <p>Mana was established with the instruction in mind. Kids need to know why and how to play the game. When we understand how to play the game, we love and respect the game even more.</p>
     </div>
   </div>
 </section>
