@@ -1245,20 +1245,26 @@ if (heroFrame && heroWrapper) {
       lastFrame = frameIndex;
     }
 
-    // Fade out video and content as we approach the end
+    // Fade out and hide hero as we approach the end
     if (scrolled > 0.85) {
-      const fadeProgress = (scrolled - 0.85) / 0.15;
+      const fadeProgress = Math.min(1, (scrolled - 0.85) / 0.15);
       heroSticky.style.opacity = 1 - fadeProgress;
       heroSticky.style.pointerEvents = 'none';
-      if (heroContent) { heroContent.style.opacity = 1 - fadeProgress; heroContent.style.pointerEvents = 'none'; }
-    } else if (scrolled >= 1) {
-      heroSticky.style.opacity = 0;
-      heroSticky.style.pointerEvents = 'none';
-      if (heroContent) { heroContent.style.opacity = 0; heroContent.style.pointerEvents = 'none'; }
+      heroSticky.style.visibility = fadeProgress >= 1 ? 'hidden' : 'visible';
+      if (heroContent) {
+        heroContent.style.opacity = 1 - fadeProgress;
+        heroContent.style.pointerEvents = 'none';
+        heroContent.style.visibility = fadeProgress >= 1 ? 'hidden' : 'visible';
+      }
     } else {
       heroSticky.style.opacity = 1;
       heroSticky.style.pointerEvents = 'auto';
-      if (heroContent) { heroContent.style.opacity = 1; heroContent.style.pointerEvents = 'auto'; }
+      heroSticky.style.visibility = 'visible';
+      if (heroContent) {
+        heroContent.style.opacity = 1;
+        heroContent.style.pointerEvents = 'auto';
+        heroContent.style.visibility = 'visible';
+      }
     }
   }, { passive: true });
 }
