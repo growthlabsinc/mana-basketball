@@ -172,7 +172,8 @@ nav {
   z-index: 0;
   transition: opacity 0.6s ease;
 }
-.hero-video-bg video {
+.hero-video-bg video,
+.hero-video-bg img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -880,10 +881,10 @@ footer {
   </button>
 </nav>
 
-<!-- HERO: Sticky scroll-driven video -->
+<!-- HERO: Sticky scroll-driven frames -->
 <div class="hero-video-wrapper" id="home">
   <div class="hero-video-bg" id="heroSticky">
-    <video id="heroVideo" src="hero_video.mp4" muted playsinline webkit-playsinline preload="auto"></video>
+    <img id="heroFrame" src="frames/frame_0001.webp" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center 30%;">
   </div>
 
   <div class="hero-content">
@@ -1210,30 +1211,25 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 reveals.forEach(el => observer.observe(el));
 
-// ── STICKY SCROLL-DRIVEN VIDEO ──
-const heroVideo = document.getElementById('heroVideo');
+// ── STICKY SCROLL-DRIVEN FRAMES ──
+const TOTAL_FRAMES = 120;
+const heroFrame = document.getElementById('heroFrame');
 const heroWrapper = document.querySelector('.hero-video-wrapper');
 const heroSticky = document.getElementById('heroSticky');
 const heroContent = document.querySelector('.hero-content');
 
-if (heroVideo && heroWrapper) {
-  let videoReady = false;
+// Preload all frames
+const frameImages = [];
+for (let i = 1; i <= TOTAL_FRAMES; i++) {
+  const img = new Image();
+  img.src = `frames/frame_${String(i).padStart(4, '0')}.webp`;
+  frameImages.push(img);
+}
 
-  function initVideo() {
-    if (videoReady) return;
-    videoReady = true;
-    heroVideo.pause();
-    heroVideo.currentTime = 0;
-  }
-
-  heroVideo.addEventListener('loadedmetadata', initVideo);
-  heroVideo.addEventListener('canplay', initVideo);
-  // Force load on mobile
-  heroVideo.play().then(() => heroVideo.pause()).catch(() => {});
+if (heroFrame && heroWrapper) {
+  let lastFrame = -1;
 
   window.addEventListener('scroll', () => {
-    if (!heroVideo.duration) return;
-
     const rect = heroWrapper.getBoundingClientRect();
     const wrapperHeight = heroWrapper.offsetHeight;
     const scrollableDistance = wrapperHeight - window.innerHeight;
@@ -1241,8 +1237,12 @@ if (heroVideo && heroWrapper) {
     // How far we've scrolled through the wrapper (0 to 1)
     const scrolled = Math.min(1, Math.max(0, -rect.top / scrollableDistance));
 
-    // Map scroll to video time (forward direction)
-    heroVideo.currentTime = heroVideo.duration * scrolled;
+    // Map scroll to frame index
+    const frameIndex = Math.min(TOTAL_FRAMES - 1, Math.floor(scrolled * TOTAL_FRAMES));
+    if (frameIndex !== lastFrame) {
+      heroFrame.src = frameImages[frameIndex].src;
+      lastFrame = frameIndex;
+    }
 
     // Fade out video and content as we approach the end
     if (scrolled > 0.85) {
