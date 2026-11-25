@@ -170,7 +170,7 @@ nav {
   height: 100vh;
   overflow: hidden;
   z-index: 0;
-  transition: opacity 0.6s ease;
+  will-change: opacity;
 }
 .hero-video-bg video,
 .hero-video-bg img {
@@ -178,6 +178,13 @@ nav {
   height: 100%;
   object-fit: cover;
   object-position: center 30%;
+}
+.hero-video-bg canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 .hero-video-bg::after {
   content: '';
@@ -885,7 +892,8 @@ footer {
 <!-- HERO: Sticky scroll-driven frames -->
 <div class="hero-video-wrapper" id="home">
   <div class="hero-video-bg" id="heroSticky">
-    <img id="heroFrame" src="frames/frame_0001.webp" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center 30%;">
+    <img id="heroFrame" src="frames/frame_0001.webp" alt="" fetchpriority="high" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center 30%;">
+    <canvas id="heroCanvas" aria-hidden="true"></canvas>
   </div>
 
   <div class="hero-content">
@@ -1214,61 +1222,131 @@ const observer = new IntersectionObserver((entries) => {
 reveals.forEach(el => observer.observe(el));
 
 // ── STICKY SCROLL-DRIVEN FRAMES ──
-const TOTAL_FRAMES = 120;
-const heroFrame = document.getElementById('heroFrame');
-const heroWrapper = document.querySelector('.hero-video-wrapper');
-const heroSticky = document.getElementById('heroSticky');
-const heroContent = document.querySelector('.hero-content');
+// Drawn on a canvas from an animation-frame loop. The frame position eases toward the scroll position and neighbouring
+// frames are cross-faded, so the motion is continuous instead of stepping one image per scroll event.
+(function () {
+  const TOTAL_FRAMES = 120;
+  const heroWrapper = document.querySelector('.hero-video-wrapper');
+  const heroSticky = document.getElementById('heroSticky');
+  const heroContent = document.querySelector('.hero-content');
+  const heroFrame = document.getElementById('heroFrame');
+  const canvas = document.getElementById('heroCanvas');
+  if (!heroWrapper || !heroSticky || !canvas || !canvas.getContext) return;
+  const ctx = canvas.getContext('2d', { alpha: false });
+  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const FOCUS_Y = 0.30;                      // same crop as object-position: center 30%
+  const EASE = 0.16;                         // share of the remaining distance covered per 60 Hz frame
+  const src = i => `frames/frame_${String(i + 1).padStart(4, '0')}.webp`;
 
-// Preload all frames
-const frameImages = [];
-for (let i = 1; i <= TOTAL_FRAMES; i++) {
-  const img = new Image();
-  img.src = `frames/frame_${String(i).padStart(4, '0')}.webp`;
-  frameImages.push(img);
-}
+  // Frames load coarse to fine (every 16th, 8th, 4th, 2nd, then the rest), so the whole scroll range is covered early.
+  const frames = new Array(TOTAL_FRAMES);
+  const ready = new Uint8Array(TOTAL_FRAMES);
+  const order = [];
+  for (let step = 16; step >= 1; step >>= 1) {
+    for (let i = 0; i < TOTAL_FRAMES; i += step) if (!order.includes(i)) order.push(i);
+  }
+  function load(i) {
+    const img = new Image();
+    img.decoding = 'async';
+    img.onload = () => {
+      const done = () => { ready[i] = 1; dirty = true; kick(); };
+      if (img.decode) img.decode().then(done, done); else done();
+    };
+    img.src = src(i);
+    frames[i] = img;
+  }
+  let next = 0;
+  function loadMore() {                      // a few at a time, so the first frames are not starved
+    const until = Math.min(order.length, next + 6);
+    for (; next < until; next++) load(order[next]);
+    if (next < order.length) setTimeout(loadMore, 60);
+  }
 
-if (heroFrame && heroWrapper) {
-  let lastFrame = -1;
+  let target = 0, current = 0, dirty = true, running = false, last = 0;
+  let cw = 0, ch = 0, drawnKey = '', fadeKey = -1;
 
-  window.addEventListener('scroll', () => {
-    const rect = heroWrapper.getBoundingClientRect();
-    const wrapperHeight = heroWrapper.offsetHeight;
-    const scrollableDistance = wrapperHeight - window.innerHeight;
+  function resize() {
+    const r = heroSticky.getBoundingClientRect();
+    // The frames are 960 px wide; a backing store much larger than that only costs fill rate.
+    const dpr = Math.min(window.devicePixelRatio || 1, 2, 1440 / r.width, Math.sqrt(1.6e6 / (r.width * r.height)));
+    const w = Math.max(1, Math.round(r.width * dpr)), h = Math.max(1, Math.round(r.height * dpr));
+    if (w !== cw || h !== ch) { cw = canvas.width = w; ch = canvas.height = h; drawnKey = ''; }
+  }
 
-    // How far we've scrolled through the wrapper (0 to 1)
-    const scrolled = Math.min(1, Math.max(0, -rect.top / scrollableDistance));
-
-    // Map scroll to frame index
-    const frameIndex = Math.min(TOTAL_FRAMES - 1, Math.floor(scrolled * TOTAL_FRAMES));
-    if (frameIndex !== lastFrame) {
-      heroFrame.src = frameImages[frameIndex].src;
-      lastFrame = frameIndex;
+  function nearest(i) {                      // closest frame that has finished decoding
+    if (ready[i]) return i;
+    for (let d = 1; d < TOTAL_FRAMES; d++) {
+      if (i - d >= 0 && ready[i - d]) return i - d;
+      if (i + d < TOTAL_FRAMES && ready[i + d]) return i + d;
     }
+    return -1;
+  }
 
-    // Fade out and hide hero as we approach the end
-    if (scrolled > 0.85) {
-      const fadeProgress = Math.min(1, (scrolled - 0.85) / 0.15);
-      heroSticky.style.opacity = 1 - fadeProgress;
-      heroSticky.style.pointerEvents = 'none';
-      heroSticky.style.visibility = fadeProgress >= 1 ? 'hidden' : 'visible';
-      if (heroContent) {
-        heroContent.style.opacity = 1 - fadeProgress;
-        heroContent.style.pointerEvents = 'none';
-        heroContent.style.visibility = fadeProgress >= 1 ? 'hidden' : 'visible';
-      }
-    } else {
-      heroSticky.style.opacity = 1;
-      heroSticky.style.pointerEvents = 'auto';
-      heroSticky.style.visibility = 'visible';
-      if (heroContent) {
-        heroContent.style.opacity = 1;
-        heroContent.style.pointerEvents = 'auto';
-        heroContent.style.visibility = 'visible';
-      }
-    }
-  }, { passive: true });
-}
+  function cover(img) {                      // object-fit: cover, object-position: center 30%
+    const iw = img.naturalWidth, ih = img.naturalHeight;
+    const s = Math.max(cw / iw, ch / ih), dw = iw * s, dh = ih * s;
+    ctx.drawImage(img, (cw - dw) / 2, (ch - dh) * FOCUS_Y, dw, dh);
+  }
+
+  function draw() {
+    const i0 = Math.floor(current), t = current - i0;
+    const a = nearest(i0);
+    if (a < 0) return;
+    const i1 = Math.min(TOTAL_FRAMES - 1, i0 + 1);
+    const blend = a === i0 && t > 0.01 && i1 !== i0 && ready[i1];
+    const key = a + ':' + (blend ? t.toFixed(3) : 0);
+    if (key === drawnKey) return;
+    drawnKey = key;
+    ctx.globalAlpha = 1;
+    cover(frames[a]);
+    if (blend) { ctx.globalAlpha = t; cover(frames[i1]); ctx.globalAlpha = 1; }
+    if (heroFrame && heroFrame.style.visibility !== 'hidden') heroFrame.style.visibility = 'hidden';
+  }
+
+  function fade() {                          // hero fades out over the last 15% of its scroll range
+    const p = current / (TOTAL_FRAMES - 1);
+    const f = p > 0.85 ? Math.min(1, (p - 0.85) / 0.15) : 0;
+    const key = Math.round(f * 200);
+    if (key === fadeKey) return;
+    fadeKey = key;
+    const hidden = f >= 1 ? 'hidden' : 'visible', pe = f > 0 ? 'none' : 'auto';
+    heroSticky.style.opacity = 1 - f; heroSticky.style.visibility = hidden; heroSticky.style.pointerEvents = pe;
+    if (heroContent) { heroContent.style.opacity = 1 - f; heroContent.style.visibility = hidden; heroContent.style.pointerEvents = pe; }
+  }
+
+  function measure() {
+    const range = heroWrapper.offsetHeight - window.innerHeight;
+    const scrolled = range > 0 ? Math.min(1, Math.max(0, -heroWrapper.getBoundingClientRect().top / range)) : 0;
+    target = Math.round(scrolled * (TOTAL_FRAMES - 1));   // settle on a whole frame: no double image at rest
+    kick();
+  }
+
+  function tick(now) {
+    const dt = Math.min(64, now - last || 16.7);
+    last = now;
+    const gap = target - current;
+    if (reduceMotion || Math.abs(gap) < 0.002) current = target;
+    else current += gap * (1 - Math.pow(1 - EASE, dt / 16.7));
+    draw();
+    fade();
+    if (current !== target || dirty) { dirty = false; requestAnimationFrame(tick); }
+    else running = false;
+  }
+  function kick() {
+    if (running) return;
+    running = true;
+    last = performance.now();
+    requestAnimationFrame(tick);
+  }
+
+  window.addEventListener('scroll', measure, { passive: true });
+  window.addEventListener('resize', () => { resize(); dirty = true; measure(); }, { passive: true });
+  window.addEventListener('orientationchange', () => { resize(); dirty = true; measure(); }, { passive: true });
+  resize();
+  measure();
+  current = target;                          // no glide on load or when the page is restored part way down
+  loadMore();
+})();
 
 // ── FORM HANDLER ──
 function handleSubmit(e) {
