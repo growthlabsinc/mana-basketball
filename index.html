@@ -1245,13 +1245,16 @@ reveals.forEach(el => observer.observe(el));
   for (let step = 16; step >= 1; step >>= 1) {
     for (let i = 0; i < TOTAL_FRAMES; i += step) if (!order.includes(i)) order.push(i);
   }
-  function load(i) {
+  function load(i, then) {
+    if (frames[i]) return;
     const img = new Image();
     img.decoding = 'async';
+    const settle = () => { if (then) { const f = then; then = null; f(); } };
     img.onload = () => {
-      const done = () => { ready[i] = 1; dirty = true; kick(); };
+      const done = () => { ready[i] = 1; dirty = true; kick(); settle(); };
       if (img.decode) img.decode().then(done, done); else done();
     };
+    img.onerror = settle;
     img.src = src(i);
     frames[i] = img;
   }
@@ -1264,6 +1267,9 @@ reveals.forEach(el => observer.observe(el));
 
   let target = 0, current = 0, dirty = true, running = false, last = 0;
   let cw = 0, ch = 0, drawnKey = '', fadeKey = -1;
+  let opened = false, userMoved = false;
+  const moved = () => { userMoved = true; };
+  ['wheel', 'touchstart', 'keydown', 'pointerdown'].forEach(e => window.addEventListener(e, moved, { passive: true, once: true }));
 
   function resize() {
     const r = heroSticky.getBoundingClientRect();
@@ -1292,6 +1298,9 @@ reveals.forEach(el => observer.observe(el));
     const i0 = Math.floor(current), t = current - i0;
     const a = nearest(i0);
     if (a < 0) return;
+    // Until the frame the page opened on has been drawn, show nothing else: stand-in frames arriving in
+    // load order would otherwise flash through the sequence on every load.
+    if (!opened) { if (a !== i0) return; opened = true; }
     const i1 = Math.min(TOTAL_FRAMES - 1, i0 + 1);
     const blend = a === i0 && t > 0.01 && i1 !== i0 && ready[i1];
     const key = a + ':' + (blend ? t.toFixed(3) : 0);
@@ -1318,6 +1327,7 @@ reveals.forEach(el => observer.observe(el));
     const range = heroWrapper.offsetHeight - window.innerHeight;
     const scrolled = range > 0 ? Math.min(1, Math.max(0, -heroWrapper.getBoundingClientRect().top / range)) : 0;
     target = Math.round(scrolled * (TOTAL_FRAMES - 1));   // settle on a whole frame: no double image at rest
+    if (!userMoved) current = target;        // scroll restored by the browser on load: jump, do not play through
     kick();
   }
 
@@ -1345,7 +1355,7 @@ reveals.forEach(el => observer.observe(el));
   resize();
   measure();
   current = target;                          // no glide on load or when the page is restored part way down
-  loadMore();
+  load(target, loadMore);                    // the frame the page opens on first, the rest only after it is in
 })();
 
 // ── FORM HANDLER ──
