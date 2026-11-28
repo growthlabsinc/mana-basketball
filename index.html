@@ -756,6 +756,10 @@ section { padding: 8rem 3rem; position: relative; overflow: hidden; background: 
   transition: background 0.3s, color 0.3s, border-color 0.3s;
   align-self: flex-start;
 }
+.form-submit:disabled { opacity: 0.7; cursor: default; }
+.form-submit.sent { background: var(--orange); border-color: var(--orange); color: var(--white); }
+.form-note { min-height: 1.2em; margin: 0; font-size: 0.85rem; line-height: 1.5; color: rgba(255,255,255,0.75); }
+.form-note.error { color: var(--orange); }
 .form-submit:hover {
   background: var(--orange);
   border-color: var(--orange);
@@ -1169,6 +1173,8 @@ footer {
           Send Message
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </button>
+        <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+        <p class="form-note" role="status" aria-live="polite"></p>
       </form>
     </div>
   </div>
@@ -1359,20 +1365,50 @@ reveals.forEach(el => observer.observe(el));
 })();
 
 // ── FORM HANDLER ──
-function handleSubmit(e) {
+// Posts the form to the FormSubmit relay, which emails it to the address below.
+const FORM_TO = ['Mana2028.basketball', 'gmail.com'].join('@');
+const SEND_LABEL = 'Send Message <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+const PROGRAMS = { youth: 'Youth Development', elite: 'Elite Training', camps: 'Team Camps', other: 'Other' };
+
+async function handleSubmit(e) {
   e.preventDefault();
-  const btn = e.target.querySelector('.form-submit');
-  btn.textContent = 'Message Sent!';
-  btn.style.background = 'var(--orange)';
-  btn.style.borderColor = 'var(--orange)';
-  btn.style.color = 'var(--white)';
-  setTimeout(() => {
-    btn.innerHTML = 'Send Message <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
-    btn.style.background = '';
-    btn.style.borderColor = '';
-    btn.style.color = '';
-    e.target.reset();
-  }, 3000);
+  const form = e.target;
+  const btn = form.querySelector('.form-submit');
+  const note = form.querySelector('.form-note');
+  if (btn.disabled) return;
+  const f = form.elements;
+  if (f._honey.value) return;                // filled in by bots only
+  const say = (text, bad) => { note.textContent = text; note.classList.toggle('error', !!bad); };
+
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+  say('');
+  try {
+    const res = await fetch('https://formsubmit.co/ajax/' + FORM_TO, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        _subject: 'Mana Basketball website: message from ' + f.name.value.trim(),
+        _template: 'table',
+        _replyto: f.email.value.trim(),
+        Name: f.name.value.trim(),
+        Email: f.email.value.trim(),
+        Program: PROGRAMS[f.program.value] || 'Not selected',
+        Message: f.message.value.trim() || '(no message)'
+      })
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || String(data.success) !== 'true') throw new Error(data.message || 'HTTP ' + res.status);
+    btn.textContent = 'Message Sent!';
+    btn.classList.add('sent');
+    say('Thanks. We got your message and will be in touch.');
+    form.reset();
+    setTimeout(() => { btn.innerHTML = SEND_LABEL; btn.classList.remove('sent'); btn.disabled = false; }, 4000);
+  } catch (err) {
+    btn.innerHTML = SEND_LABEL;
+    btn.disabled = false;
+    say('Sorry, that did not send. Please try again, or email us at ' + FORM_TO + '.', true);
+  }
 }
 </script>
 </body>
